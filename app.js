@@ -8,12 +8,12 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, diceDOM;
 
-vascores = [0,0];
+scores = [0,0];
 roundScore = 0;
 activePlayer = 0;
-
+diceDOM = document.querySelector('.dice')
 //Clean the elements in the DOM
 document.querySelector('.dice').style.display = 'none';
 document.getElementById('score-0').textContent = '0';
@@ -28,7 +28,7 @@ document.querySelector('.btn-roll').addEventListener('click',function (){
     var dice = Math.floor(Math.random() * 6) + 1;
 
     // 2. Display the result
-    var diceDOM = document.querySelector('.dice')
+    
     diceDOM.style.display = 'block';
     diceDOM.src = `dice-${dice}.png`;
 
@@ -39,14 +39,39 @@ document.querySelector('.btn-roll').addEventListener('click',function (){
         document.getElementById(`current-${activePlayer}`).textContent = roundScore;
     }else{
         //Next player turn
-        roundScore = 0;
-        document.getElementById(`current-${activePlayer}`).textContent = roundScore;
-
-        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-
-        document.querySelector('.player-0-panel').classList.toggle('active');
-        document.querySelector('.player-1-panel').classList.toggle('active');
-        //Hide the dice
-        diceDOM.style.display = 'none';
+        nextPlayer();
     }
 });
+
+//Event listener to the btn hold
+document.querySelector('.btn-hold').addEventListener('click',function(){
+
+    //Add curren score to Global score
+    scores[activePlayer] += roundScore;
+
+    //Update the UI
+    document.getElementById(`score-${activePlayer}`).textContent = scores[activePlayer];
+    
+    // Check if player win the game
+    if(scores[activePlayer] >= 20)
+    {
+        document.getElementById(`name-${activePlayer}`).textContent = 'Winner!';
+        diceDOM.style.display = 'none';
+        document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner')
+        document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active')
+    }else{
+        nextPlayer();
+    }
+});
+
+function nextPlayer(){
+    roundScore = 0;
+    document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+    //Hide the dice
+    diceDOM.style.display = 'none';
+}
