@@ -21,7 +21,7 @@ document.getElementById('score-1').textContent = '0';
 document.getElementById('current-0').textContent = '0'
 document.getElementById('current-0').textContent = '0'
 
-
+//Event listener to the btn roll
 document.querySelector('.btn-roll').addEventListener('click',function (){
     
     // 1. Create random button
@@ -30,8 +30,23 @@ document.querySelector('.btn-roll').addEventListener('click',function (){
     // 2. Display the result
     var diceDOM = document.querySelector('.dice')
     diceDOM.style.display = 'block';
-    diceDOM.src = `dice-${dice}.png`
-
+    diceDOM.src = `dice-${dice}.png`;
 
     //3. Update the global score IF the rollerd numbres was NOT a 1
+    if(dice !== 1){
+        //Add score
+        roundScore += dice;
+        document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+    }else{
+        //Next player turn
+        roundScore = 0;
+        document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+        document.querySelector('.player-0-panel').classList.toggle('active');
+        document.querySelector('.player-1-panel').classList.toggle('active');
+        //Hide the dice
+        diceDOM.style.display = 'none';
+    }
 });
