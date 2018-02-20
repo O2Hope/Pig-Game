@@ -8,14 +8,15 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, diceDOM;
+var scores, roundScore, activePlayer, diceDOM, activeGame;
 
 //Initialize the game
 init();
 
 //Event listener to the btn roll
 document.querySelector('.btn-roll').addEventListener('click',function (){
-    
+    if(activeGame)
+    {
     // 1. Create random button
     var dice = Math.floor(Math.random() * 6) + 1;
 
@@ -33,11 +34,14 @@ document.querySelector('.btn-roll').addEventListener('click',function (){
         //Next player turn
         nextPlayer();
     }
+}
 });
 
 //Event listener to the btn hold
 document.querySelector('.btn-hold').addEventListener('click',function(){
-
+    if (activeGame) {
+        
+    
     //Add curren score to Global score
     scores[activePlayer] += roundScore;
 
@@ -45,15 +49,17 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
     document.getElementById(`score-${activePlayer}`).textContent = scores[activePlayer];
     
     // Check if player win the game
-    if(scores[activePlayer] >= 20)
+    if(scores[activePlayer] >= 50)
     {
         document.getElementById(`name-${activePlayer}`).textContent = 'Winner!';
         diceDOM.style.display = 'none';
-        document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner')
-        document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active')
+        document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner');
+        document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active');
+        activeGame = false;
     }else{
         nextPlayer();
     }
+}
 });
 
 document.querySelector('.btn-new').addEventListener('click', init);
@@ -61,6 +67,7 @@ document.querySelector('.btn-new').addEventListener('click', init);
 function init(){
     scores = [0,0];
     activePlayer = 0;
+    activeGame = true;
     roundScore = 0;
 
     diceDOM = document.querySelector('.dice')
@@ -70,7 +77,7 @@ function init(){
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
     document.getElementById('current-0').textContent = '0'
-    document.getElementById('current-0').textContent = '0'
+    document.getElementById('current-1').textContent = '0'
     document.getElementById(`name-0`).textContent = 'Player 1';
     document.getElementById(`name-1`).textContent = 'Player 2';
 
