@@ -10,16 +10,8 @@ GAME RULES:
 */
 var scores, roundScore, activePlayer, diceDOM;
 
-scores = [0,0];
-roundScore = 0;
-activePlayer = 0;
-diceDOM = document.querySelector('.dice')
-//Clean the elements in the DOM
-document.querySelector('.dice').style.display = 'none';
-document.getElementById('score-0').textContent = '0';
-document.getElementById('score-1').textContent = '0';
-document.getElementById('current-0').textContent = '0'
-document.getElementById('current-0').textContent = '0'
+//Initialize the game
+init();
 
 //Event listener to the btn roll
 document.querySelector('.btn-roll').addEventListener('click',function (){
@@ -63,6 +55,32 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
         nextPlayer();
     }
 });
+
+document.querySelector('.btn-new').addEventListener('click', init);
+
+function init(){
+    scores = [0,0];
+    activePlayer = 0;
+    roundScore = 0;
+
+    diceDOM = document.querySelector('.dice')
+
+    //Clean the elements in the DOM
+    document.querySelector('.dice').style.display = 'none';
+    document.getElementById('score-0').textContent = '0';
+    document.getElementById('score-1').textContent = '0';
+    document.getElementById('current-0').textContent = '0'
+    document.getElementById('current-0').textContent = '0'
+    document.getElementById(`name-0`).textContent = 'Player 1';
+    document.getElementById(`name-1`).textContent = 'Player 2';
+
+    document.querySelector(`.player-0-panel`).classList.remove('winner')
+    document.querySelector(`.player-1-panel`).classList.remove('winner')
+    document.querySelector(`.player-0-panel`).classList.remove('active')
+    document.querySelector(`.player-1-panel`).classList.remove('active')
+    document.querySelector(`.player-0-panel`).classList.add('active')
+
+}
 
 function nextPlayer(){
     roundScore = 0;
